@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 
 import style from './style'
 
-export default class index extends Component {
+export default class HelloMonkey extends Component {
   render() {
     
     return (
       <div 
         className={style.test}
       >
-        Hello World !
+        Hello, Jim, are you a monkey ?
       </div>
     )
   }

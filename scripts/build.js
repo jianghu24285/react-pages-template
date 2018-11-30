@@ -37,6 +37,7 @@ const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
+const utils = require('../config/utils');
 
 const measureFileSizesBeforeBuild =
   FileSizeReporter.measureFileSizesBeforeBuild;
@@ -48,8 +49,20 @@ const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
-  process.exit(1);
+// if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+//   process.exit(1);
+// }
+
+// 重写的入口js和html模版检查
+for(let key in utils.entries) {
+  const fileName = utils.entries[key]
+  const htmlPath = `${paths.appPublicTemplate}/${fileName}.html`
+  const entryPath = `${paths.appViews}/${fileName}.js`
+  
+  if(!checkRequiredFiles([htmlPath, entryPath])) {
+    process.exit(1);
+    // break
+  }
 }
 
 // First, read the current file sizes in build directory.
@@ -157,6 +170,8 @@ function build(previousFileSizes) {
 function copyPublicFolder() {
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
-    filter: file => file !== paths.appHtml,
+    // filter: file => file !== paths.appHtml,
+    // public/template目录下,放html模版,略过copy.
+    filter: file => file.indexOf(paths.appPublicTemplate) === -1,
   });
 }

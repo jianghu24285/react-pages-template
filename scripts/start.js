@@ -47,9 +47,23 @@ const createDevServerConfig = require('../config/webpackDevServer.config');
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
 
+const utils = require('../config/utils');
+
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
-  process.exit(1);
+// if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+//   process.exit(1);
+// }
+
+// 重写的入口js和html模版检查
+for(let key in utils.entries) {
+  const fileName = utils.entries[key]
+  const htmlPath = `${paths.appPublicTemplate}/${fileName}.html`
+  const entryPath = `${paths.appViews}/${fileName}.js`
+  
+  if(!checkRequiredFiles([htmlPath, entryPath])) {
+    process.exit(1);
+    // break
+  }
 }
 
 // Tools like Cloud9 rely on this.

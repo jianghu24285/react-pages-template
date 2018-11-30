@@ -11,6 +11,8 @@ const host = process.env.HOST || '0.0.0.0';
 
 module.exports = function(proxy, allowedHost) {
   return {
+    // openPage: 'template/list.html',  // 指定默认启动浏览器时打开的页面
+    // index: 'template/list.html',  // 指定首页位置
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
     // websites from potentially accessing local content through DNS rebinding:
     // https://github.com/webpack/webpack-dev-server/issues/887
@@ -78,6 +80,9 @@ module.exports = function(proxy, allowedHost) {
       // Paths with dots should still use the history fallback.
       // See https://github.com/facebookincubator/create-react-app/issues/387.
       disableDotRule: true,
+      rewrites: [
+        // { from: /^\/list.html/, to: '/build/list.html' },
+      ],
     },
     public: allowedHost,
     proxy,
