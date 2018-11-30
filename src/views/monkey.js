@@ -3,7 +3,7 @@
  * @Author: Eleven 
  * @Date: 2018-11-30 18:43:43 
  * @Last Modified by: Eleven
- * @Last Modified time: 2018-11-30 18:44:38
+ * @Last Modified time: 2018-11-30 20:29:25
  */
 
 import 'babel-polyfill'
@@ -13,7 +13,7 @@ import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 import { hot } from 'react-hot-loader'
-import registerServiceWorker from '../registerServiceWorker';
+import registerServiceWorker from '../registerServiceWorker'
 
 import store from 'store/monkey'
 import Router from 'router/monkey'
