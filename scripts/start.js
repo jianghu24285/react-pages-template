@@ -57,8 +57,8 @@ const utils = require('../config/utils');
 // 重写的入口js和html模版检查
 for(let key in utils.entries) {
   const fileName = utils.entries[key]
-  const htmlPath = `${paths.appPublicTemplate}/${fileName}.html`
-  const entryPath = `${paths.appViews}/${fileName}.js`
+  const htmlPath = `${paths.appViews}/${fileName}/${fileName}.html`
+  const entryPath = `${paths.appViews}/${fileName}/${fileName}.js`
   
   if(!checkRequiredFiles([htmlPath, entryPath])) {
     process.exit(1);

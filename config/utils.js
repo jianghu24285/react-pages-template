@@ -6,7 +6,7 @@
  * @Author: Eleven 
  * @Date: 2018-11-30 16:48:10 
  * @Last Modified by: Eleven
- * @Last Modified time: 2018-11-30 18:03:40
+ * @Last Modified time: 2018-12-02 19:59:28
  */
 
 const path = require('path')
@@ -45,7 +45,7 @@ const entries = getFilesName('src/views/**/*.js')
  *  1.允许文件夹层级嵌套;
  *  2.html的名称不允许重名;
  */
-const templates = getFilesName('public/template/**/*.html')
+const templates = getFilesName('src/views/**/*.html')
 
 /**
  * 获取webpack.config.dev.js的entry入口列表:
@@ -61,7 +61,7 @@ const getEntriesDev = () => {
       entry[fileName] = [
         require.resolve('./polyfills'),
         require.resolve('react-dev-utils/webpackHotDevClient'),
-        `${paths.appViews}/${fileName}.js`,
+        `${paths.appViews}/${fileName}/${fileName}.js`,
       ]
   })
   return entry
@@ -80,7 +80,7 @@ const getEntriesProd = () => {
   entries.forEach(fileName => {
       entry[fileName] = [
         require.resolve('./polyfills'),
-        `${paths.appViews}/${fileName}.js`,
+        `${paths.appViews}/${fileName}/${fileName}.js`,
       ]
   })
   return entry
@@ -97,7 +97,7 @@ const getHtmlWebpackPluginsDev = () => {
   templates.forEach((fileName) => {
     setting = {
       filename: `${fileName}.html`,
-      template: `${paths.appPublicTemplate}/${fileName}.html`,
+      template: `${paths.appViews}/${fileName}/${fileName}.html`,
       inject: false // js插入的位置，true/'head'/'body'/false
     }
 
@@ -126,7 +126,7 @@ const getHtmlWebpackPluginsProd = () => {
   templates.forEach((fileName) => {
     setting = {
       filename: `${fileName}.html`,
-      template: `${paths.appPublicTemplate}/${fileName}.html`,
+      template: `${paths.appViews}/${fileName}/${fileName}.html`,
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -144,6 +144,12 @@ const getHtmlWebpackPluginsProd = () => {
 
     // (仅)有入口的模版自动引入资源
     if (fileName in getEntriesProd()) {
+      /**
+       * 自动inject的chunks:
+       *  1.manifest: 是记录模块间依赖关系,当js(非vendor相关模块)有修改再次build时,vendorjs不会变动,但manifest.js和你对应页面的js(如:page-a.js)一样,一定会有变动;
+       *  2.vendor: 是我在入口处,手动定义了哪些模块需要被抽出作为基础缓存包,为了不造成阅读障碍,vendor留在webpack.config.prod.js中,而不是放在这里的getEntries...中,可以直观看到抽取了哪些依赖模块.
+       *   (与vue-cli略有差异,vue-cli是抽取所有的node_modules中的依赖模块作为基础缓存vendor)
+       */
       setting.chunks = ['manifest', 'vendor', fileName]
       setting.inject = true
       // setting.favicon = './src/assets/img/favicon.ico'

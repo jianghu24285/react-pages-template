@@ -54,8 +54,8 @@ const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 // 重写的入口js和html模版检查
 for(let key in utils.entries) {
   const fileName = utils.entries[key]
-  const htmlPath = `${paths.appPublicTemplate}/${fileName}.html`
-  const entryPath = `${paths.appViews}/${fileName}.js`
+  const htmlPath = `${paths.appViews}/${fileName}/${fileName}.html`
+  const entryPath = `${paths.appViews}/${fileName}/${fileName}.js`
   
   if(!checkRequiredFiles([htmlPath, entryPath])) {
     process.exit(1);
@@ -168,8 +168,7 @@ function build(previousFileSizes) {
 function copyPublicFolder() {
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
+    // public目录下,哪些应该略过copy.
     // filter: file => file !== paths.appHtml,
-    // public/template目录下,放html模版,略过copy.
-    filter: file => file.indexOf(paths.appPublicTemplate) === -1,
   });
 }

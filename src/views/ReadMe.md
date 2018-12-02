@@ -1,5 +1,5 @@
 # views目录
-- 这里只允许放入口js.
-- 文件后缀必须是`.js`.
-- 入口js文件名必须和`public/template/`目录下的html模版文件同名.
-- 模版html和入口js,均不可缺省.
+- 入口文件`.js`、html模版文件`.html`及文件夹,这三者**必须同名**,  
+ 如你的新页面是`page-a`,那么入口js和html模版的层级和命名分别为:  
+ `views/page-a/page-a.js`  
+ `views/page-a/page-a.html`
