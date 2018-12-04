@@ -12,13 +12,23 @@
 5. assets下的`style/`目录,推荐作为所有公共css的区域,common、lib推荐作为公用,`modules/`目录推荐新建文件夹,放置各页面独有的通用css.
 
 # 技术栈
-react 16 + react-router 4 + mobx 4 + webpack 3.8 + less/sass
+1. `react 16 + react-router 4 + mobx 4 + webpack 3 + less/sass`
+2. 开启了css模块化(`src/assets/`和`node_modules`目录排除了css模块化)
+3. `node_modules`目录仅开启了css/less的非模块化,如果导入的第三方包需要用到sass/styuls等预编译预演,再添加对应的配置.
+4. babel插件配置提取到了package.json
 
 # 运行命令
-```
+```sh
 npm run dev / npm run start   本地运行调试(访问地址,例: localhost:3000/page-a.html)
-npm run build                 打包生产代码
+npm run te-build              打包测试环境代码
+npm run build                 打包生产环境代码
+npm run http-server           启动服务器,访问本地build目录
 ```
+
+# 打包发布
+>打包发布测试环境/生产环境,需要配置:
+  - `scripts/te-build.js`或`scripts/build.js`下的`process.env.PUBLIC_URL`环境变量,影响的是你所有的静态资源(如:图片、js文件、css文件、字体文件等)引入路径.
+  - `scripts/te-build.js`或`scripts/build.js`下的`process.env.REACT_APP_BASE_URL`环境变量,影响的是你的接口域名.
 
 # 打包代码结构
 ![build_dir](./doc/images/build_dir.jpg)

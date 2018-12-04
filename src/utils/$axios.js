@@ -3,7 +3,7 @@
  * @Author: Eleven 
  * @Date: 2018-11-28 15:25:09 
  * @Last Modified by: Eleven
- * @Last Modified time: 2018-11-28 15:25:32
+ * @Last Modified time: 2018-12-04 15:57:48
  */
 
 import axios from 'axios'
@@ -15,8 +15,6 @@ const instance = axios.create({
   baseURL: BASE_URL,
   // 超时设置(单位毫秒),1分钟.
   timeout: 60*1000,
-  // 跨域允许携带cookie
-  withCredentials: true,
   // 响应的数据格式: json / blob /document /arraybuffer / text / stream
   responseType: 'json',
 })

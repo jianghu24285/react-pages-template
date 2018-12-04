@@ -13,8 +13,6 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const utils = require('./utils');
-// 覆盖ant-mobile主题
-const antTheme = paths.appPackageJson.antTheme
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -65,9 +63,12 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
+  /**
+   * 改动后:入口会自动扫描生成,直接在src/views/目录下新建入口js文件和html模版即可:
+   *  1.vendor的抽取采用了和vue-cli一样的方案,尽量不要改动vendor !!
+   *  2.不要新建名为vendor的入口 !!
+   */
   entry: Object.assign({}, {
-    // vendor的抽取采用了和vue-cli一样的方案,尽量不要改动vendor !!
-    // !!! 不要新建名为vendor的入口 !!!
     vendor: [
       'react', 
       'react-dom', 
@@ -77,7 +78,7 @@ module.exports = {
       'axios', 
       'js-cookie',
     ],
-  }, utils.getEntriesProd()), // 改动后:入口会自动扫描生成,直接在src/views/目录下新建入口js文件即可
+  }, utils.getEntriesProd()),
   // entry: {
   //   vendor: [ // vendor的抽取采用了和vue-cli一样的方案,尽量不要改动vendor !!
   //     'react', 
@@ -196,25 +197,7 @@ module.exports = {
             loader: require.resolve('babel-loader'),
             options: {
               compact: true,
-              // presets: [
-              //   ["env", {
-              //     "modules": false,
-              //     "targets": {
-              //       "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
-              //     }
-              //   }],
-              //   "stage-2"
-              // ],
-              // plugins: [
-              //   "babel-plugin-transform-decorators-legacy",
-              //   "transform-runtime",
-              //   [
-              //     "import", {
-              //       libraryName: "antd-mobile",
-              //       style: true   // true => 加载less版本antd-mobile ; "css" => 加载css版本antd-mobile
-              //     }
-              //   ]
-              // ]
+              // babel插件的配置提取到了package.json
             },
           },
           // The notation here is somewhat confusing.
@@ -279,7 +262,7 @@ module.exports = {
                       },
                     },
                     {
-                      loader: require.resolve('sass-loader')
+                      loader: require.resolve('sass-loader'),
                     }
                   ],
                 },
@@ -339,11 +322,6 @@ module.exports = {
                     },
                     {
                       loader: require.resolve('less-loader'),
-                      // 用来覆盖ant-mobile的配置,似乎不需要
-                      // options: {
-                      //   modifyVars: antTheme, // 覆盖ant-mobile主题
-                      //   include: /node_modules/,
-                      // },
                     }
                   ],
                 },
@@ -355,7 +333,6 @@ module.exports = {
           /**
            * node_modules和assets目录专用,
            * 如:ant-mobile,单独开启css/less编译,不带css模块化;
-           * 配置覆盖ant-mobile主题;
            */
           {
             test: /\.(less|css)$/,
@@ -403,11 +380,6 @@ module.exports = {
                     },
                     {
                       loader: require.resolve('less-loader'),
-                      options: {
-                        modifyVars: antTheme, // 覆盖ant-mobile主题
-                        include: /node_modules/,
-                        javascriptEnabled: true,
-                      },
                     }
                   ],
                 },

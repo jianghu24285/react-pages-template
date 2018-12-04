@@ -3,7 +3,7 @@
  * @Author: Eleven 
  * @Date: 2018-11-30 18:43:43 
  * @Last Modified by: Eleven
- * @Last Modified time: 2018-12-02 19:44:13
+ * @Last Modified time: 2018-12-04 15:56:06
  */
 
 import 'babel-polyfill'
@@ -18,24 +18,8 @@ import registerServiceWorker from '../../registerServiceWorker'
 import store from 'store/page-a'
 import Router from 'router/page-a'
 
-import { isProd } from 'utils'
-import fastclick from 'fastclick'
-import vConsole from 'vconsole'
-
 // 页面全局通用样式
 import 'assets/style/modules/page-a'
-
-// fastclick注册
-if ('addEventListener' in document) {
-  document.addEventListener('DOMContentLoaded', function() {
-    fastclick.attach(document.body)
-  }, false)
-}
-
-// 非生产环境启用vconsole
-if( !isProd ){
-  new vConsole()
-}
 
 class App extends Component {
   render() {
